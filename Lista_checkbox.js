@@ -20,7 +20,9 @@ export default class Lista_kiir extends Component {
         this.getData().then(adatokvissza => {
 
             this.setState({ products: adatokvissza })
+
         })
+        alert(JSON.stringify(this.state.products))
     }
 
     getData = async () => {

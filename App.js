@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Lista_kiir from './Lista_checkbox'
 import Listaad from './Lista_ad';
+import Felvitel from './felvitel.js'
 
 function HomeScreen({ navigation }) {
   return (
@@ -27,6 +28,12 @@ function Masodik_lap({ navigation }) {
 }
 
 
+function Listagenyo({ navigation }) {
+  return (
+    <Felvitel></Felvitel>
+  );
+}
+
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -34,8 +41,9 @@ export default function App() {
     <NavigationContainer>
       <Drawer.Navigator useLegacyImplementation initialRouteName="Home">
         <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Lista létrehozása" component={Elso_lap} />
+        <Drawer.Screen name="Lista bővítés" component={Elso_lap} />
         <Drawer.Screen name="Meglévő listák" component={Masodik_lap} />
+        <Drawer.Screen name="Meglévő listákg" component={Listagenyo} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

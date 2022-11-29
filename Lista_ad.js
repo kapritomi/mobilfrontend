@@ -70,7 +70,7 @@ export default class Listaad extends Component {
       <View style={styles.container}>
 
         <View style={{ width: 300, borderWidth: 1, borderColor: "purple", borderRadius: 5, alignSelf: "center" }} >
-          <TextInput ref={input => { this.textInput = input }}
+          <TextInput ref={this.myTextInput}
             style={{ height: 40 }}
             placeholder="Hozzáad!"
             onChangeText={szoveg => this.setState({ listaelem: szoveg })}
@@ -79,7 +79,7 @@ export default class Listaad extends Component {
         </View>
 
         <Button title="Hozzáad"
-          onPress={this.felvitel, this.textInput.clear()}></Button>
+          onPress={this.felvitel}></Button>
         <Button title="torles"
           onPress={this.mindentorles}></Button>
         <View style={{ flexDirection: "row", marginTop: 20, marginBottom: 20 }}>
