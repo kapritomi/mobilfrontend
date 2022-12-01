@@ -1,59 +1,39 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Switch, ScrollView, StyleSheet, Text, View, TouchableOpacity, } from 'react-native';
+import { SafeAreaView, Switch, ScrollView, StyleSheet, Text, View, TouchableOpacity,FlatList, Pressable } from 'react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Animatable from 'react-native-animatable';
-import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
 
 const CONTENT = [
     {
         title: 'Terms and Conditions',
-        content:
-            'The following terms and conditions, together with any referenced documents form a legal agreement between you and your employer, employees, agents, contractors and any other entity on whose behalf you accept these terms',
-    },
-    {
-        title: 'Privacy Policy',
-        content:
-            'A Privacy Policy agreement is the agreement where you specify if you collect personal data from your users, what kind of personal data you collect and what you do with that data.',
-    },
-    {
-        title: 'Return Policy',
-        content:
-            'Our Return & Refund Policy template lets you get  started with a Return and Refund Policy agreement.  This template is free to download and use. According to TrueShip study, over 60% of customers review a Return/Refund Policy before they make a purchasing decision.',
-    },
+        content:'dasdad'
+    }
 ];
 
-//To make the selector (Something like tabs)
-const SELECTORS = [
-    { title: 'T&C', value: 0 },
-    { title: 'Privacy Policy', value: 1 },
-    { title: 'Return Policy', value: 2 },
-    { title: 'Reset all' },
+const fos = [
+    { id: 1, txt: 'React Native', isChecked: false},
+    { id: 2, txt: 'Javascript', isChecked: false },
+    { id: 3, txt: 'Laravel', isChecked: false },
+    { id: 4, txt: 'PHP', isChecked: false },
+    { id: 5, txt: 'jQuery', isChecked: false },
+    { id: 6, txt: 'Boostrap', isChecked: false },
+    { id: 7, txt: 'HTML', isChecked: false },
 ];
 
 const App = () => {
-    // Default active selector
-    const [activeSections, setActiveSections] = useState([]);
-    // Collapsed condition for the single collapsible
-    const [collapsed, setCollapsed] = useState(true);
-    // MultipleSelect is for the Multiple Expand allowed
-    // True: Expand multiple at a time
-    // False: One can be expand at a time
-    const [multipleSelect, setMultipleSelect] = useState(false);
 
-    const toggleExpanded = () => {
-        // Toggling the state of single Collapsible
-        setCollapsed(!collapsed);
-    };
+    const [activeSections, setActiveSections] = useState([]);
+    const [multipleSelect, setMultipleSelect] = useState(false);
+  
 
     const setSections = (sections) => {
-        // Setting up a active section state
         setActiveSections(
             sections.includes(undefined) ? [] : sections
         );
     };
 
     const renderHeader = (section, _, isActive) => {
-        // Accordion header view
         return (
             <Animatable.View
                 duration={400}
@@ -69,8 +49,22 @@ const App = () => {
         );
     };
 
+   
+
+    const handleChange = (id) => {
+        
+        let temp = fos.map((product) => {
+            if (id === product.id) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        return temp;
+    };
+
+  
+
     const renderContent = (section, _, isActive) => {
-        // Accordion Content view
         return (
             <Animatable.View
                 duration={400}
@@ -79,11 +73,32 @@ const App = () => {
                     isActive ? styles.active : styles.inactive
                 ]}
                 transition="backgroundColor">
-                <Animatable.Text
-                    animation={isActive ? 'bounceIn' : undefined}
-                    style={{ textAlign: 'center' }}>
-                    {section.content}
-                </Animatable.Text>
+
+                     <FlatList
+                        data={fos}
+                        renderItem={({ item }) => (
+                        <View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    flex: 1,
+                                    justifyContent: 'space-between',
+                                }}>
+                                <Pressable onPress={() => handleChange(item.id)} >
+                                    <MaterialCommunityIcons
+                                        name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={24} color="#000" />
+                                        
+                                </Pressable>
+                                <Animatable.Text
+                                    animation={isActive ? 'bounceIn' : undefined}
+                                    style={{ textAlign: 'center' }}>
+                                    {item.txt}
+                                </Animatable.Text>
+                            </View>
+                        </View>
+                    )}
+                />
+               
             </Animatable.View>
         );
     };
@@ -91,105 +106,18 @@ const App = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <ScrollView>
-                    <Text style={styles.title}>
-                        Example of Collapsible/Accordion/Expandable
-                        Listview in React
-                        Native
-                    </Text>
-
-                    {/*Code for Single Collapsible Start*/}
-                    <TouchableOpacity onPress={toggleExpanded}>
-                        <View style={styles.header}>
-                            <Text style={styles.headerText}>
-                                Single Collapsible
-                            </Text>
-                            {/*Heading of Single Collapsible*/}
-                        </View>
-                    </TouchableOpacity>
-                    {/*Content of Single Collapsible*/}
-                    <Collapsible
-                        collapsed={collapsed}
-                        align="center"
-                    >
-                        <View style={styles.content}>
-                            <Text style={{ textAlign: 'center' }}>
-                                This is a dummy text of Single Collapsible View
-                            </Text>
-                        </View>
-                    </Collapsible>
-                    {/*Code for Single Collapsible Ends*/}
-
-                    <View
-                        style={{
-                            backgroundColor: '#000',
-                            height: 1,
-                            marginTop: 10
-                        }} />
-                    <View style={styles.multipleToggle}>
-                        <Text
-                            style={styles.multipleToggle__title}
-                        >
-                            Multiple Expand Allowed?
-                        </Text>
-                        <Switch
-                            value={multipleSelect}
-                            onValueChange={(multipleSelect) =>
-                                setMultipleSelect(multipleSelect)
-                            }
-                        />
-                    </View>
-                    <Text style={styles.selectTitle}>
-                        Please select below option to expand
-                    </Text>
-
-                    {/*Code for Selector starts here*/}
-                    <View style={styles.selectors}>
-                        {SELECTORS.map((selector) => (
-                            <TouchableOpacity
-                                key={selector.title}
-                                onPress={
-                                    () => setSections([selector.value])
-                                }
-                            >
-                                <View style={styles.selector}>
-                                    <Text
-                                        style={
-                                            activeSections.includes(selector.value) &&
-                                            styles.activeSelector
-                                        }>
-                                        {selector.title}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-                    {/*Code for Selector ends here*/}
-
-                    {/*Code for Accordion/Expandable List starts here*/}
+               {/*<ScrollView>*/} 
                     <Accordion
                         activeSections={activeSections}
-                        // For any default active section
                         sections={CONTENT}
-                        // Title and content of accordion
                         touchableComponent={TouchableOpacity}
-                        // Which type of touchable component you want
-                        // It can be the following Touchables
-                        // TouchableHighlight, TouchableNativeFeedback
-                        // TouchableOpacity , TouchableWithoutFeedback
                         expandMultiple={multipleSelect}
-                        // If you want to expand multiple at a time
                         renderHeader={renderHeader}
-                        // Header Component(View) to render
                         renderContent={renderContent}
-                        // Content Component(View) to render
                         duration={400}
-                        // Duration for Collapse and expand
                         onChange={setSections}
-                    // Setting the state of active sections
                     />
-                    {/*Code for Accordion/Expandable List ends here*/}
-                </ScrollView>
+                 {/*</ScrollView>*/} 
             </View>
         </SafeAreaView>
     );
