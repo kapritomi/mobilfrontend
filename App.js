@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Lista_kiir from './Lista_checkbox'
 import Listaad from './Lista_ad';
-import Felvitel from './felvitel.js';
+import Felvitel from './felvitel';
 import Listmutat from './Lista_megjelenit';
 
 
@@ -37,7 +37,6 @@ function Masodik_lap({ navigation }) {
 function Listafel({ navigation }) {
   return (
     <Felvitel></Felvitel>
-
   );
 }
 

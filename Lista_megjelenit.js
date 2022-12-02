@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Switch, ScrollView, StyleSheet, Text, View, TouchableOpacity,FlatList, Pressable } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, FlatList, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Animatable from 'react-native-animatable';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -7,12 +7,11 @@ import Accordion from 'react-native-collapsible/Accordion';
 const CONTENT = [
     {
         title: 'Terms and Conditions',
-        content:'dasdad'
+        content: ""
     }
 ];
-
 const fos = [
-    { id: 1, txt: 'React Native', isChecked: false},
+    { id: 1, txt: 'React Native', isChecked: false },
     { id: 2, txt: 'Javascript', isChecked: false },
     { id: 3, txt: 'Laravel', isChecked: false },
     { id: 4, txt: 'PHP', isChecked: false },
@@ -21,11 +20,12 @@ const fos = [
     { id: 7, txt: 'HTML', isChecked: false },
 ];
 
+
 const App = () => {
 
     const [activeSections, setActiveSections] = useState([]);
     const [multipleSelect, setMultipleSelect] = useState(false);
-  
+
 
     const setSections = (sections) => {
         setActiveSections(
@@ -48,21 +48,19 @@ const App = () => {
             </Animatable.View>
         );
     };
-
-   
-
+    const [products, setProducts] = React.useState(fos);
     const handleChange = (id) => {
-        
-        let temp = fos.map((product) => {
+
+        let temp = products.map((product) => {
             if (id === product.id) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
         });
-        return temp;
-    };
+        setProducts(temp);
 
-  
+        alert(JSON.stringify(fos));
+    };
 
     const renderContent = (section, _, isActive) => {
         return (
@@ -74,9 +72,9 @@ const App = () => {
                 ]}
                 transition="backgroundColor">
 
-                     <FlatList
-                        data={fos}
-                        renderItem={({ item }) => (
+                <FlatList
+                    data={fos}
+                    renderItem={({ item }) => (
                         <View>
                             <View
                                 style={{
@@ -84,11 +82,9 @@ const App = () => {
                                     flex: 1,
                                     justifyContent: 'space-between',
                                 }}>
-                                <Pressable onPress={() => handleChange(item.id)} >
-                                    <MaterialCommunityIcons
-                                        name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={24} color="#000" />
-                                        
-                                </Pressable>
+                                <TouchableOpacity onPress={() => handleChange(item.id)} >
+                                    {item.isChecked ? <Text>Fos</Text> : <Text>Szar</Text>}
+                                </TouchableOpacity>
                                 <Animatable.Text
                                     animation={isActive ? 'bounceIn' : undefined}
                                     style={{ textAlign: 'center' }}>
@@ -98,7 +94,7 @@ const App = () => {
                         </View>
                     )}
                 />
-               
+
             </Animatable.View>
         );
     };
@@ -106,20 +102,21 @@ const App = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-               {/*<ScrollView>*/} 
-                    <Accordion
-                        activeSections={activeSections}
-                        sections={CONTENT}
-                        touchableComponent={TouchableOpacity}
-                        expandMultiple={multipleSelect}
-                        renderHeader={renderHeader}
-                        renderContent={renderContent}
-                        duration={400}
-                        onChange={setSections}
-                    />
-                 {/*</ScrollView>*/} 
+                {/*<ScrollView>*/}
+                <Accordion
+                    activeSections={activeSections}
+                    sections={CONTENT}
+                    touchableComponent={TouchableOpacity}
+                    expandMultiple={multipleSelect}
+                    renderHeader={renderHeader}
+                    renderContent={renderContent}
+                    duration={400}
+                    onChange={setSections}
+                />
+                {/*</ScrollView>*/}
             </View>
         </SafeAreaView>
+
     );
 };
 
