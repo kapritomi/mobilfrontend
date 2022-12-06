@@ -6,11 +6,11 @@ import Accordion from 'react-native-collapsible/Accordion';
 
 const CONTENT = [
     {
-        title: 'Terms and Conditions',
+        title: 'Karácsonyi lista',
         content: ""
     }
 ];
-const fos = [
+var fos = [
     { id: 1, txt: 'React Native', isChecked: false },
     { id: 2, txt: 'Javascript', isChecked: false },
     { id: 3, txt: 'Laravel', isChecked: false },
@@ -21,11 +21,12 @@ const fos = [
 ];
 
 
+
+
+
 const App = () => {
 
     const [activeSections, setActiveSections] = useState([]);
-    const [multipleSelect, setMultipleSelect] = useState(false);
-
 
     const setSections = (sections) => {
         setActiveSections(
@@ -39,7 +40,7 @@ const App = () => {
                 duration={400}
                 style={[
                     styles.header,
-                    isActive ? styles.active : styles.inactive
+                    isActive ? styles.active : styles.inactive, { backgroundColor: "lightgreen", width: 330, alignSelf: "center", borderRadius: 10 }
                 ]}
                 transition="backgroundColor">
                 <Text style={styles.headerText}>
@@ -51,15 +52,16 @@ const App = () => {
     const [products, setProducts] = React.useState(fos);
     const handleChange = (id) => {
 
-        let temp = products.map((product) => {
+        let temp = fos.map((product) => {
             if (id === product.id) {
-                return { ...product, isChecked: !product.isChecked };
+                { isChecked: !product.isChecked };
+                alert(product.isChecked)
             }
-            return product;
+
         });
         setProducts(temp);
 
-        alert(JSON.stringify(fos));
+
     };
 
     const renderContent = (section, _, isActive) => {
@@ -82,9 +84,10 @@ const App = () => {
                                     flex: 1,
                                     justifyContent: 'space-between',
                                 }}>
-                                <TouchableOpacity onPress={() => handleChange(item.id)} >
-                                    {item.isChecked ? <Text>Fos</Text> : <Text>Szar</Text>}
-                                </TouchableOpacity>
+                                <Pressable onPress={() => handleChange(item.id)} >
+                                    <MaterialCommunityIcons
+                                        name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={30} color="#000" />
+                                </Pressable>
                                 <Animatable.Text
                                     animation={isActive ? 'bounceIn' : undefined}
                                     style={{ textAlign: 'center' }}>
@@ -107,7 +110,6 @@ const App = () => {
                     activeSections={activeSections}
                     sections={CONTENT}
                     touchableComponent={TouchableOpacity}
-                    expandMultiple={multipleSelect}
                     renderHeader={renderHeader}
                     renderContent={renderContent}
                     duration={400}
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
     header: {
         backgroundColor: '#F5FCFF',
         padding: 10,
+
     },
     headerText: {
         textAlign: 'center',
@@ -148,9 +151,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     active: {
-        backgroundColor: 'rgba(255,255,255,1)',
+        width: 320,
+        alignSelf: "center",
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        backgroundColor: 'green',
     },
     inactive: {
+        width: 320,
+        alignSelf: "center",
         backgroundColor: 'rgba(245,252,255,1)',
     },
     selectors: {
