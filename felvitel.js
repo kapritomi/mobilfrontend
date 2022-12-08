@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, FlatList, Text, Image, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, StyleSheet, View, Pressable } from 'react-native';
 const IP = require('./Ipcim');
+import { List } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 
 export default class App extends Component {
     constructor(props) {
@@ -9,8 +13,53 @@ export default class App extends Component {
         this.state = {
             data: [],
             isLoading: true,
+            products: [],
+            tartalom: [],
         };
     }
+
+    componentDidMount() {
+        this.getData().then(adatokvissza => {
+            this.setState({ products: adatokvissza })
+        })
+        this.getLista();
+    }
+
+    getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('@lista')
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
+        } catch (e) {
+
+        }
+    }
+
+    handleChange = (id) => {
+        let temp = this.state.tartalom.map((product) => {
+            if (id === product.id) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        this.setState({ tartalom: temp })
+    };
+
+    getlistakid = (id) => {
+        let uj = [];
+        let megujabb = [];
+        this.state.data.map((item) => {
+            if (item.listak_id == id) {
+                megujabb = item.listak_tartalom.split(',')
+                console.log(megujabb)
+
+            }
+        });
+        for (let i = 0; i < megujabb.length; i++) {
+            uj.push({ nev: megujabb[i], isChecked: false, id: i })
+            this.setState({ tartalom: uj })
+
+        }
+    };
 
     async getLista() {
         try {
@@ -41,24 +90,42 @@ export default class App extends Component {
         return date.toString();
     }
 
-    componentDidMount() {
-        this.getLista();
-    }
+
 
     render() {
-        const { data, isLoading } = this.state;
-
         return (
             <View >
                 <FlatList
-                    data={data}
+                    data={this.state.data}
                     renderItem={({ item }) => (
-                        <TouchableOpacity >
-                            <View style={{ backgroundColor: "lightgreen", margin: 10, borderRadius: 10, padding: 5 }}>
-                                <Text style={{ fontSize: 20 }}>{item.listak_nev}</Text>
-                                <Text style={{ fontSize: 20 }}>{this.getParsedDate(item.listak_datum)}</Text>
-                            </View>
-                        </TouchableOpacity>
+                        <List.Section >
+                            <List.Accordion title={item.listak_nev} onPress={() => this.getlistakid(item.listak_id)} style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}>
+                                <FlatList style={{ marginTop: 10 }}
+                                    data={this.state.tartalom}
+                                    renderItem={({ item }) => (
+                                        <View>
+                                            <View style={{ marginLeft: 10, flexDirection: 'row', flex: 1 }}>
+                                                <Text style={{ fontSize: 20 }} > {item.nev}</Text>
+
+                                            </View>
+                                        </View>
+                                    )}
+                                />
+
+
+
+                            </List.Accordion>
+                        </List.Section>
+
+
+
+
+                        /*<TouchableOpacity onPress={() => this.funkcio()}>
+                    <View style={{ backgroundColor: "lightgreen", margin: 10, borderRadius: 10, padding: 5 }}>
+                        <Text style={{ fontSize: 20 }}>{item.listak_nev}</Text>
+                        <Text style={{ fontSize: 20 }}>{this.getParsedDate(item.listak_datum)}</Text>
+                    </View>
+                </TouchableOpacity>*/
                     )}
                 />
 
