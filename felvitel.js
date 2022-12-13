@@ -3,7 +3,6 @@ import { ActivityIndicator, FlatList, Text, TouchableOpacity, StyleSheet, View, 
 const IP = require('./Ipcim');
 import { List } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 export default class App extends Component {
@@ -15,6 +14,7 @@ export default class App extends Component {
             isLoading: true,
             products: [],
             tartalom: [],
+
         };
     }
 
@@ -90,8 +90,6 @@ export default class App extends Component {
         return date.toString();
     }
 
-
-
     render() {
         return (
             <View >
@@ -99,7 +97,7 @@ export default class App extends Component {
                     data={this.state.data}
                     renderItem={({ item }) => (
                         <List.Section >
-                            <List.Accordion title={item.listak_nev} onPress={() => this.getlistakid(item.listak_id)} style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}>
+                            <List.Accordion title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>} onPress={() => this.getlistakid(item.listak_id)} style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}>
                                 <FlatList style={{ marginTop: 10 }}
                                     data={this.state.tartalom}
                                     renderItem={({ item }) => (
@@ -121,11 +119,11 @@ export default class App extends Component {
 
 
                         /*<TouchableOpacity onPress={() => this.funkcio()}>
-                    <View style={{ backgroundColor: "lightgreen", margin: 10, borderRadius: 10, padding: 5 }}>
-                        <Text style={{ fontSize: 20 }}>{item.listak_nev}</Text>
-                        <Text style={{ fontSize: 20 }}>{this.getParsedDate(item.listak_datum)}</Text>
-                    </View>
-                </TouchableOpacity>*/
+                                <View style={{ backgroundColor: "lightgreen", margin: 10, borderRadius: 10, padding: 5 }}>
+                                    <Text style={{ fontSize: 20 }}>{item.listak_nev}</Text>
+                                    <Text style={{ fontSize: 20 }}>{this.getParsedDate(item.listak_datum)}</Text>
+                                </View>
+                            </TouchableOpacity>*/
                     )}
                 />
 
