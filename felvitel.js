@@ -50,7 +50,7 @@ export default class App extends Component {
         this.state.data.map((item) => {
             if (item.listak_id == id) {
                 megujabb = item.listak_tartalom.split(',')
-                console.log(megujabb)
+
 
             }
         });
