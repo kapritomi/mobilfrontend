@@ -14,52 +14,14 @@ export default class App extends Component {
             isLoading: true,
             products: [],
             tartalom: [],
-
         };
     }
 
     componentDidMount() {
-        this.getData().then(adatokvissza => {
-            this.setState({ products: adatokvissza })
-        })
         this.getLista();
     }
 
-    getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('@lista')
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
-        } catch (e) {
-
-        }
-    }
-
-    handleChange = (id) => {
-        let temp = this.state.tartalom.map((product) => {
-            if (id === product.id) {
-                return { ...product, isChecked: !product.isChecked };
-            }
-            return product;
-        });
-        this.setState({ tartalom: temp })
-    };
-
-    getlistakid = (id) => {
-        let uj = [];
-        let megujabb = [];
-        this.state.data.map((item) => {
-            if (item.listak_id == id) {
-                megujabb = item.listak_tartalom.split(',')
-
-
-            }
-        });
-        for (let i = 0; i < megujabb.length; i++) {
-            uj.push({ nev: megujabb[i], isChecked: false, id: i })
-            this.setState({ tartalom: uj })
-
-        }
-    };
+    
 
     async getLista() {
         try {
@@ -72,6 +34,21 @@ export default class App extends Component {
             this.setState({ isLoading: false });
         }
     }
+
+
+    getlistakid = (id) => {
+        let uj = [];
+        let megujabb = [];
+        this.state.data.map((item) => {
+            if (item.listak_id == id) {
+                megujabb = item.listak_tartalom.split(',')
+            }
+        });
+        for (let i = 0; i < megujabb.length; i++) {
+            uj.push({ nev: megujabb[i], isChecked: false, id: i })
+            this.setState({ tartalom: uj })
+        }
+    };
 
     getParsedDate(strDate) {
         var strSplitDate = String(strDate).split(' ');
@@ -109,25 +86,10 @@ export default class App extends Component {
                                         </View>
                                     )}
                                 />
-
-
-
                             </List.Accordion>
                         </List.Section>
-
-
-
-
-                        /*<TouchableOpacity onPress={() => this.funkcio()}>
-                                <View style={{ backgroundColor: "lightgreen", margin: 10, borderRadius: 10, padding: 5 }}>
-                                    <Text style={{ fontSize: 20 }}>{item.listak_nev}</Text>
-                                    <Text style={{ fontSize: 20 }}>{this.getParsedDate(item.listak_datum)}</Text>
-                                </View>
-                            </TouchableOpacity>*/
                     )}
                 />
-
-
             </View>
         );
     }
@@ -138,13 +100,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         paddingHorizontal: 10
-    },
-    button: {
-        alignSelf: "center",
-        alignItems: "center",
-        padding: 10,
-        backgroundColor: "blue",
-        width: 180
     },
     countContainer: {
         alignItems: "center",
