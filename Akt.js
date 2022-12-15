@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View , FlatList, Text, TouchableOpacity} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
+import { Button, StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
+
 
 const IP = require('./Ipcim');
 
@@ -49,24 +48,25 @@ export default class App extends Component {
     }
 
 
-  render() {
-    return (
-      <View >
-        <FlatList
-            data={this.state.data}
-            renderItem={({ item }) => (
-                <TouchableOpacity style={{ backgroundColor: "lightgreen", width: 350, height: 60, borderRadius: 10, alignSelf: "center" ,justifyContent: 'center', marginTop: 10}} ><Text style={{marginLeft: 3,fontSize: 20}}>{item.listak_nev} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
-            )}
-        />
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View >
+                <FlatList
+                    data={this.state.data}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity style={{ backgroundColor: "lightgreen", width: 350, height: 60, borderRadius: 10, alignSelf: "center", justifyContent: 'center', marginTop: 10 }}
+                            onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20 }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
+                    )}
+                />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   justifyContent: 'center',
-  }
-  
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+    }
+
 });

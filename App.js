@@ -30,7 +30,7 @@ function Listafel({ navigation }) {
 }
 function Aktlista({ navigation }) {
   return (
-    <Aktualis_lista></Aktualis_lista>
+    <Aktualis_lista navigation={navigation}></Aktualis_lista>
   );
 }
 
@@ -52,14 +52,14 @@ const Stack = createNativeStackNavigator()
 export default function App() {
   return (
     <NavigationContainer>
-<Stack.Navigator>
-<Stack.Screen
-  name="Root"
-  component={Root}
-  options={{ headerShown: false }}
-/>
-<Stack.Screen name="Seged" component={Seged} />
-</Stack.Navigator>
-</NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Root"
+          component={Root}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Seged" component={Seged} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

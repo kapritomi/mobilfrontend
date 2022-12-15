@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View , FlatList, Text, TouchableOpacity} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const IP = require('./Ipcim');
+import { View, FlatList, Text, Pressable } from 'react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default class App extends Component {
     constructor(props) {
@@ -10,62 +8,60 @@ export default class App extends Component {
 
         this.state = {
             data: [],
-            isLoading: true,
+            tartalom_tomb: [],
+            zsolt: ""
         };
     }
 
+    funckio = () => {
+        let uj = [];
+        this.state.zsolt = this.props.route.params.aktid;
+        uj = this.state.zsolt.split(',')
+        console.log(uj)
+        this.setState({ data: uj })
+        console.log(this.state.data)
+
+        /* for (let i = 0; i < this.state.data.length; i++) {
+             tartalom_tomb.Push({
+                 id: i,
+                 isChecked: false,
+                 nev: data[i]
+             })
+         }*/
+    }
+
+    /* handleChange = (id) => {
+         let temp = this.state.data.map((product) => {
+             if (id === product.id) {
+                 return { ...product, isChecked: !product.isChecked };
+             }
+             return product;
+         });
+         this.setState({ products: temp })
+     };*/
+
     componentDidMount() {
-        this.getLista();
+        this.funckio();
+        console.log(this.state.data)
     }
 
-    async getLista() {
-        try {
-            const response = await fetch(IP.ipcim + 'aktualis');
-            const json = await response.json();
-            this.setState({ data: json });
-        } catch (error) {
-            console.log(error);
-        } finally {
-            this.setState({ isLoading: false });
-        }
+    render() {
+        return (
+            <View>
+                <FlatList
+                    data={this.state.data}
+                    renderItem={({ item }) => (
+                        <View>
+                            {/*<Pressable onPress={() => this.handleChange(item.id)}>
+                                <MaterialCommunityIcons
+                                    name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={30} color="#000" />
+                            </Pressable>*/}
+                            <Text style={{ color: "black", fontSize: 20 }}>{item}</Text>
+                        </View>
+                    )}
+                />
+
+            </View>
+        );
     }
-
-    getParsedDate(strDate) {
-        var strSplitDate = String(strDate).split(' ');
-        var date = new Date(strSplitDate[0]);
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1;
-
-        var yyyy = date.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd;
-        }
-        if (mm < 10) {
-            mm = '0' + mm;
-        }
-        date = yyyy + "-" + mm + "-" + dd;
-        return date.toString();
-    }
-
-
-  render() {
-    return (
-      <View >
-        <FlatList
-            data={this.state.data}
-            renderItem={({ item }) => (
-                <TouchableOpacity style={{ backgroundColor: "lightgreen", width: 350, height: 60, borderRadius: 10, alignSelf: "center" ,justifyContent: 'center', marginTop: 10}}><Text style={{marginLeft: 3,fontSize: 20}}>{item.listak_nev} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
-            )}
-        />
-      </View>
-    );
-  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   justifyContent: 'center',
-  }
-  
-});
