@@ -9,7 +9,8 @@ export default class App extends Component {
         this.state = {
             data: [],
             tartalom_tomb: [],
-            zsolt: ""
+            zsolt: "",
+            adat: []
         };
     }
 
@@ -17,32 +18,31 @@ export default class App extends Component {
         let uj = [];
         this.state.zsolt = this.props.route.params.aktid;
         uj = this.state.zsolt.split(',')
-        console.log(uj)
         this.setState({ data: uj })
-        console.log(this.state.data)
 
-        /* for (let i = 0; i < this.state.data.length; i++) {
-             tartalom_tomb.Push({
-                 id: i,
-                 isChecked: false,
-                 nev: data[i]
-             })
-         }*/
+
+        for (let i = 0; i < this.state.data.length; i++) {
+            this.state.tartalom_tomb.Push({
+                "id": i,
+                "isChecked": false,
+                "nev": this.state.data[i]
+            })
+        }
+        console.log(JSON.stringify(this.state.tartalom_tomb))
     }
 
-    /* handleChange = (id) => {
-         let temp = this.state.data.map((product) => {
-             if (id === product.id) {
-                 return { ...product, isChecked: !product.isChecked };
-             }
-             return product;
-         });
-         this.setState({ products: temp })
-     };*/
+    handleChange = (id) => {
+        let temp = this.state.data.map((product) => {
+            if (id === product.id) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        this.setState({ products: temp })
+    };
 
     componentDidMount() {
         this.funckio();
-        console.log(this.state.data)
     }
 
     render() {

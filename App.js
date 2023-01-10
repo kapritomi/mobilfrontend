@@ -39,7 +39,7 @@ function Root({ navigation }) {
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Lista bővítés" component={Elso_lap} />
-      <Drawer.Screen name="Jelenlegi Listák listák" component={Aktlista} />
+      <Drawer.Screen name="Jelenlegi Listák" component={Aktlista} />
       <Drawer.Screen name="Meglévő listák" component={Listafel} />
     </Drawer.Navigator>
 

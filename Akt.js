@@ -11,11 +11,13 @@ export default class App extends Component {
         this.state = {
             data: [],
             isLoading: true,
+            adat: []
         };
     }
 
     componentDidMount() {
         this.getLista();
+
     }
 
     async getLista() {
@@ -29,6 +31,8 @@ export default class App extends Component {
             this.setState({ isLoading: false });
         }
     }
+
+
 
     getParsedDate(strDate) {
         var strSplitDate = String(strDate).split(' ');
