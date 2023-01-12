@@ -19,6 +19,7 @@ export default class App extends Component {
 
     componentDidMount() {
         this.getLista();
+       
     }
 
     async getLista() {
@@ -45,6 +46,7 @@ export default class App extends Component {
             uj.push({ nev: megujabb[i], isChecked: false, id: i })
             this.setState({ tartalom: uj })
         }
+        
     }
 
     getParsedDate(strDate) {
@@ -71,7 +73,7 @@ export default class App extends Component {
                     data={this.state.data}
                     renderItem={({ item }) => (
                         <List.Section >
-                            <List.Accordion title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>} onPress={() => this.getlistakid(item.listak_id)} style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}>
+                            <List.Accordion  title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>} onPress={() => this.getlistakid(item.listak_id)} style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}>
                                 <FlatList style={{ marginTop: 10 }}
                                     data={this.state.tartalom}
                                     renderItem={({ item }) => (

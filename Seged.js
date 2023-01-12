@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TextInput } from 'react-native';
 import { Button } from 'react-native';
 import { TouchableOpacity } from 'react-native';
+const IP = require('./Ipcim');
 
 export default class App extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ export default class App extends Component {
             bevitel3: this.state.zsolt,
             bevitel4: this.state.ar
         }
-        const response = fetch('http://192.168.6.20:3000/arfel', {
+        const response = fetch(IP.ipcim + 'arfel', {
             method: "POST",
             body: JSON.stringify(adatok),
             headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -88,7 +89,7 @@ export default class App extends Component {
                         value={this.state.ar}
                     />
                     <TouchableOpacity onPress={this.felvitel()}>
-                        <View><Text style={{ fontSize: 20 }}>Mentés</Text></View>
+                        <View ><Text style={{ fontSize: 20 }}>Mentés</Text></View>
                     </TouchableOpacity>
                 </View>
             </View>

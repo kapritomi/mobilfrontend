@@ -51,8 +51,6 @@ export default class Listaad extends Component {
 
 
   }
-
-
   storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
@@ -60,7 +58,6 @@ export default class Listaad extends Component {
     } catch (e) {
     }
   }
-
   getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@lista')
@@ -69,7 +66,6 @@ export default class Listaad extends Component {
 
     }
   }
-
   componentDidMount() {
     this.getData().then(vissza_adatok2 => {
       console.log(vissza_adatok2)

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
-
-
 const IP = require('./Ipcim');
 
 export default class App extends Component {
@@ -17,7 +15,6 @@ export default class App extends Component {
 
     componentDidMount() {
         this.getLista();
-
     }
 
     async getLista() {
@@ -31,8 +28,6 @@ export default class App extends Component {
             this.setState({ isLoading: false });
         }
     }
-
-
 
     getParsedDate(strDate) {
         var strSplitDate = String(strDate).split(' ');
