@@ -21,8 +21,6 @@ export default class App extends Component {
         this.getLista();
     }
 
-    
-
     async getLista() {
         try {
             const response = await fetch(IP.ipcim + 'listak');
@@ -34,7 +32,6 @@ export default class App extends Component {
             this.setState({ isLoading: false });
         }
     }
-
 
     getlistakid = (id) => {
         let uj = [];
@@ -48,7 +45,7 @@ export default class App extends Component {
             uj.push({ nev: megujabb[i], isChecked: false, id: i })
             this.setState({ tartalom: uj })
         }
-    };
+    }
 
     getParsedDate(strDate) {
         var strSplitDate = String(strDate).split(' ');
@@ -86,6 +83,7 @@ export default class App extends Component {
                                         </View>
                                     )}
                                 />
+                                <View><Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 }}>{item.listak_ar} Ft</Text></View>
                             </List.Accordion>
                         </List.Section>
                     )}
