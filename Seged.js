@@ -47,7 +47,7 @@ export default class App extends Component {
                 nev: this.state.data[i]
             })
         }
-        console.log(JSON.stringify(this.state.tartalom_tomb))
+        
     }
 
     handleChange = (id) => {

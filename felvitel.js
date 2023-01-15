@@ -1,50 +1,55 @@
-import React, { Component } from 'react';
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, StyleSheet, View, Pressable } from 'react-native';
+import * as React from 'react';
+import { List, Checkbox} from 'react-native-paper';
+import {View, Text,FlatList} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 const IP = require('./Ipcim');
-import { List } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+class MyComponent extends React.Component {
+  state = {
+    adatok:[],
+    tartalom: [],
+  }
 
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: [],
-            isLoading: true,
-            products: [],
-            tartalom: [],
-        };
+    componentDidMount()
+    { 
+        this.getLista();
+        let tartalomSplitelve="";
+        for (let i = 0; i < this.state.adatok.length; i++) {
+            tartalomSplitelve=this.state.adatok[i].listak_tartalom.split(',')
+            this.state.adatok[i].listak_tartalom=tartalomSplitelve
+            this.state.adatok[i].kinyitott = false
+        }
     }
 
-    componentDidMount() {
-        this.getLista();
+    _handlePress = (id) =>{
+    let tombmentese=this.state.adatok
+    for (let i = 0; i < this.state.adatok.length; i++) {
+      if(this.state.adatok[i].listak_id==id)
+      {
+       tombmentese[i].kinyitott=!tombmentese[i].kinyitott
        
+      }
+      else{
+        tombmentese[i].kinyitott=false
+      }
+      this.setState({adatok:tombmentese})
+      //console.log(JSON.stringify(tombmentese))
+
+    }
+    for (let i = 0; i < this.state.adatok.length; i++) {
+        
+        }
     }
 
     async getLista() {
         try {
             const response = await fetch(IP.ipcim + 'listak');
             const json = await response.json();
-            this.setState({ data: json });
+            this.setState({ adatok: json });
         } catch (error) {
             console.log(error);
         } finally {
             this.setState({ isLoading: false });
-        }
-    }
-
-    getlistakid = (id) => {
-        let uj = [];
-        let megujabb = [];
-        this.state.data.map((item) => {
-            if (item.listak_id == id) {
-                megujabb = item.listak_tartalom.split(',')
-            }
-        });
-        for (let i = 0; i < megujabb.length; i++) {
-            uj.push({ nev: megujabb[i], isChecked: false, id: i })
-            this.setState({ tartalom: uj })
         }
         
     }
@@ -66,43 +71,47 @@ export default class App extends Component {
         return date.toString();
     }
 
-    render() {
-        return (
-            <View >
+    getlistakid = (id) => {
+        let uj = [];
+        let megujabb = [];
+        this.state.adatok.map((item) => {
+            if (item.listak_id == id) {
+                megujabb = item.listak_tartalom.split(',')
+            }
+        });
+        for (let i = 0; i < megujabb.length; i++) {
+            uj.push({ nev: megujabb[i], isChecked: false, id: i })
+            this.setState({ tartalom: uj })
+        }
+        
+    }
+
+  render() {
+    return (
+        <ScrollView>
+        <View >
+            {this.state.adatok.map((item,key)=><List.Section key={key}>
+            <List.Accordion
+                title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
+                style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}
+                expanded={item.kinyitott}
+                onPress={()=>{this._handlePress(item.listak_id); this.getlistakid(item.listak_id)}}>
+
                 <FlatList
-                    data={this.state.data}
-                    renderItem={({ item }) => (
-                        <List.Section >
-                            <List.Accordion  title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>} onPress={() => this.getlistakid(item.listak_id)} style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}>
-                                <FlatList style={{ marginTop: 10 }}
-                                    data={this.state.tartalom}
-                                    renderItem={({ item }) => (
-                                        <View>
-                                            <View style={{ marginLeft: 10, flexDirection: 'row', flex: 1 }}>
-                                                <Text style={{ fontSize: 20 }} > {item.nev}</Text>
+                data={this.state.tartalom}
+                renderItem={({ item }) => (
+                <List.Item title={ item.nev}></List.Item>
+                )}/>
+                <View>
+                    <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 }}>{item.listak_ar} Ft</Text>
+                </View>
+            </List.Accordion>
+            </List.Section>
+            )}
+        </View>
+        </ScrollView>
+    );
+  }
+}
 
-                                            </View>
-                                        </View>
-                                    )}
-                                />
-                                <View><Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 }}>{item.listak_ar} Ft</Text></View>
-                            </List.Accordion>
-                        </List.Section>
-                    )}
-                />
-            </View>
-        );
-    }
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 10
-    },
-    countContainer: {
-        alignItems: "center",
-        padding: 10
-    }
-});
+export default MyComponent;
