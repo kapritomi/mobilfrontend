@@ -5,14 +5,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Listaad from './Lista_ad';
 import Felvitel from './felvitel';
-import Aktualis_lista from './Akt'
-import Seged from './Seged'
+import Aktualis_lista from './Akt';
+import Seged from './Seged';
+import Dia from './Dia'
 
 
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
+      
     </View>
   );
 }
@@ -20,6 +21,12 @@ function HomeScreen({ navigation }) {
 function Elso_lap({ navigation }) {
   return (
     <Listaad></Listaad>
+  );
+}
+
+function Diak({ navigation }) {
+  return (
+    <Dia></Dia>
   );
 }
 
@@ -36,11 +43,12 @@ function Aktlista({ navigation }) {
 
 function Root({ navigation }) {
   return (
-    <Drawer.Navigator initialRouteName="Home">
+    <Drawer.Navigator initialRouteName="Home"  screenOptions={{drawerStyle: {backgroundColor: '#c6cbef'}, headerStyle:{backgroundColor: "green"} /*headerShown: false}*/ }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Lista bővítés" component={Elso_lap} />
       <Drawer.Screen name="Jelenlegi Listák" component={Aktlista} />
       <Drawer.Screen name="Meglévő listák" component={Listafel} />
+      <Drawer.Screen name="Diagram" component={Diak} />
     </Drawer.Navigator>
 
   );

@@ -6,6 +6,7 @@ import { Button } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 const IP = require('./Ipcim');
 
+
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -62,6 +63,7 @@ export default class App extends Component {
 
     componentDidMount() {
         this.funckio();
+        
     }
 
     render() {
