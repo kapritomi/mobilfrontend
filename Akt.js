@@ -53,7 +53,7 @@ export default class App extends Component {
                 <FlatList
                     data={this.state.data}
                     renderItem={({ item }) => (
-                        <TouchableOpacity style={{ backgroundColor: "lightgreen", width: 350, height: 60, borderRadius: 10, alignSelf: "center", justifyContent: 'center', marginTop: 10 }}
+                        <TouchableOpacity style={{ backgroundColor: "#0ca830", width: 350, height: 60, borderRadius: 10, alignSelf: "center", justifyContent: 'center', marginTop: 10 }}
                             onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20 }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
                     )}
                 />

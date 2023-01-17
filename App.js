@@ -10,10 +10,11 @@ import Seged from './Seged';
 import Dia from './Dia'
 
 
+
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      
+
     </View>
   );
 }
@@ -23,6 +24,7 @@ function Elso_lap({ navigation }) {
     <Listaad></Listaad>
   );
 }
+
 
 function Diak({ navigation }) {
   return (
@@ -43,7 +45,7 @@ function Aktlista({ navigation }) {
 
 function Root({ navigation }) {
   return (
-    <Drawer.Navigator initialRouteName="Home"  screenOptions={{drawerStyle: {backgroundColor: '#c6cbef'}, headerStyle:{backgroundColor: "green"} /*headerShown: false}*/ }}>
+    <Drawer.Navigator initialRouteName="Home" screenOptions={{ drawerStyle: { backgroundColor: '#c6cbef' }, headerStyle: { backgroundColor: "green" } /*headerShown: false}*/ }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Lista bővítés" component={Elso_lap} />
       <Drawer.Screen name="Jelenlegi Listák" component={Aktlista} />

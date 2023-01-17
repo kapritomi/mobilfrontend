@@ -1,43 +1,41 @@
 import * as React from 'react';
-import { List, Checkbox} from 'react-native-paper';
-import {View, Text,FlatList} from 'react-native';
+import { List, Checkbox } from 'react-native-paper';
+import { View, Text, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 const IP = require('./Ipcim');
 
 class MyComponent extends React.Component {
-  state = {
-    adatok:[],
-    tartalom: [],
-  }
+    state = {
+        adatok: [],
+        tartalom: [],
+    }
 
-    componentDidMount()
-    { 
+    componentDidMount() {
         this.getLista();
-        let tartalomSplitelve="";
+        let tartalomSplitelve = "";
         for (let i = 0; i < this.state.adatok.length; i++) {
-            tartalomSplitelve=this.state.adatok[i].listak_tartalom.split(',')
-            this.state.adatok[i].listak_tartalom=tartalomSplitelve
+            tartalomSplitelve = this.state.adatok[i].listak_tartalom.split(',')
+            this.state.adatok[i].listak_tartalom = tartalomSplitelve
             this.state.adatok[i].kinyitott = false
         }
     }
 
-    _handlePress = (id) =>{
-    let tombmentese=this.state.adatok
-    for (let i = 0; i < this.state.adatok.length; i++) {
-      if(this.state.adatok[i].listak_id==id)
-      {
-       tombmentese[i].kinyitott=!tombmentese[i].kinyitott
-       
-      }
-      else{
-        tombmentese[i].kinyitott=false
-      }
-      this.setState({adatok:tombmentese})
-      //console.log(JSON.stringify(tombmentese))
+    _handlePress = (id) => {
+        let tombmentese = this.state.adatok
+        for (let i = 0; i < this.state.adatok.length; i++) {
+            if (this.state.adatok[i].listak_id == id) {
+                tombmentese[i].kinyitott = !tombmentese[i].kinyitott
 
-    }
-    for (let i = 0; i < this.state.adatok.length; i++) {
-        
+            }
+            else {
+                tombmentese[i].kinyitott = false
+            }
+            this.setState({ adatok: tombmentese })
+            //console.log(JSON.stringify(tombmentese))
+
+        }
+        for (let i = 0; i < this.state.adatok.length; i++) {
+
         }
     }
 
@@ -51,7 +49,7 @@ class MyComponent extends React.Component {
         } finally {
             this.setState({ isLoading: false });
         }
-        
+
     }
 
     getParsedDate(strDate) {
@@ -83,35 +81,35 @@ class MyComponent extends React.Component {
             uj.push({ nev: megujabb[i], isChecked: false, id: i })
             this.setState({ tartalom: uj })
         }
-        
+
     }
 
-  render() {
-    return (
-        <ScrollView>
-        <View >
-            {this.state.adatok.map((item,key)=><List.Section key={key}>
-            <List.Accordion
-                title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
-                style={{ backgroundColor: "lightgreen", width: 350, borderRadius: 10, alignSelf: "center" }}
-                expanded={item.kinyitott}
-                onPress={()=>{this._handlePress(item.listak_id); this.getlistakid(item.listak_id)}}>
+    render() {
+        return (
+            <ScrollView>
+                <View >
+                    {this.state.adatok.map((item, key) => <List.Section key={key}>
+                        <List.Accordion
+                            title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
+                            style={{ backgroundColor: "#0ca830", width: 350, borderRadius: 10, alignSelf: "center" }}
+                            expanded={item.kinyitott}
+                            onPress={() => { this._handlePress(item.listak_id); this.getlistakid(item.listak_id) }}>
 
-                <FlatList
-                data={this.state.tartalom}
-                renderItem={({ item }) => (
-                <List.Item title={ item.nev}></List.Item>
-                )}/>
-                <View>
-                    <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 }}>{item.listak_ar} Ft</Text>
+                            <FlatList
+                                data={this.state.tartalom}
+                                renderItem={({ item }) => (
+                                    <List.Item title={item.nev}></List.Item>
+                                )} />
+                            <View>
+                                <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 }}>{item.listak_ar} Ft</Text>
+                            </View>
+                        </List.Accordion>
+                    </List.Section>
+                    )}
                 </View>
-            </List.Accordion>
-            </List.Section>
-            )}
-        </View>
-        </ScrollView>
-    );
-  }
+            </ScrollView>
+        );
+    }
 }
 
 export default MyComponent;
