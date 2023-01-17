@@ -254,7 +254,8 @@ export default class App extends Component {
         this.state.zoldseggyumolcs.map((item) => {
             this.state.data.map((item1) => {
                 if (item == item1) {
-
+                   let index = this.state.data.indexOf(item)
+                   this.state.data.splice(index, 1)
                     this.state.zoldseggyumolcsTalal.push(item)
                 }
             })
@@ -262,7 +263,8 @@ export default class App extends Component {
         this.state.tejtermekek.map((item) => {
             this.state.data.map((item1) => {
                 if (item == item1) {
-
+                    let index = this.state.data.indexOf(item)
+                    this.state.data.splice(index, 1)
                     this.state.tejtermekekTalal.push(item)
                 }
             })
@@ -270,7 +272,8 @@ export default class App extends Component {
         this.state.pek.map((item) => {
             this.state.data.map((item1) => {
                 if (item == item1) {
-
+                    let index = this.state.data.indexOf(item)
+                    this.state.data.splice(index, 1)
                     this.state.pekTalal.push(item)
                 }
             })
@@ -279,13 +282,22 @@ export default class App extends Component {
         for (let i = 0; i < this.state.pekTalal.length; i++) {
             this.state.valogatott.push(this.state.pekTalal[i])
         }
+
         this.state.valogatott.push("zöldségek")
         for (let i = 0; i < this.state.zoldseggyumolcsTalal.length; i++) {
             this.state.valogatott.push(this.state.zoldseggyumolcsTalal[i])
-        } this.state.valogatott.push("tejtermék")
+        } 
+
+        this.state.valogatott.push("tejtermék")
         for (let i = 0; i < this.state.tejtermekekTalal.length; i++) {
             this.state.valogatott.push(this.state.tejtermekekTalal[i])
         }
+
+        this.state.valogatott.push("Egyéb")
+
+        this.state.data.map((item) => {
+                    this.state.valogatott.push(item)
+        })
 
         for (let i = 0; i < this.state.valogatott.length; i++) {
             this.state.tartalom_tomb.push({
@@ -308,6 +320,7 @@ export default class App extends Component {
 
     componentDidMount() {
         this.funckio();
+        fetch(IP.ipcim + 'regilistatorles', { method: 'DELETE' })
         console.log(this.state.valogatott)
     }
 
@@ -319,14 +332,14 @@ export default class App extends Component {
                     renderItem={({ item }) => (
                         <View >
                             <View style={{ flexDirection: 'row', flex: 1 }}>
-                                {item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" ? <Text style={{ fontSize: 20 }}> {item.nev}</Text> :
+                                {item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" || item.nev == "Egyéb"? <Text style={{ fontSize: 20 }}> {item.nev}</Text> :
                                     <Pressable onPress={() => { this.handleChange(item.id); }}>
                                         <MaterialCommunityIcons
                                             name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={30} color="#000" />
                                     </Pressable>
 
-                                }{item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" ?
-                                    <Text></Text> : <Text style={{ fontSize: 20 }}> {item.nev}</Text>
+                                }{item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" || item.nev == "Egyéb"?
+                                    <Text style={{marginBottom: 15}}></Text> : <Text style={{ fontSize: 20 }}> {item.nev}</Text>
                                 }
 
                             </View>
