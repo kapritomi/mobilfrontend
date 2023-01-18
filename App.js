@@ -13,7 +13,7 @@ import Dia from './Dia'
 
 function HomeScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1,  backgroundColor: "rgb(18,18,18)"}}>
 
     </View>
   );
@@ -45,7 +45,7 @@ function Aktlista({ navigation }) {
 
 function Root({ navigation }) {
   return (
-    <Drawer.Navigator initialRouteName="Home" screenOptions={{ drawerStyle: { backgroundColor: '#c6cbef' }, headerStyle: { backgroundColor: "green" } /*headerShown: false}*/ }}>
+    <Drawer.Navigator initialRouteName="Home" screenOptions={{ drawerStyle: { backgroundColor: 'rgb(32,32,32)'}, headerStyle: { backgroundColor: "rgb(1,194, 154)" }, headerTintColor: "rgb(18,18,18)", drawerActiveBackgroundColor: "rgb(18,18,18)", drawerActiveTintColor: "white", drawerInactiveTintColor: "white" }}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Lista bővítés" component={Elso_lap} />
       <Drawer.Screen name="Jelenlegi Listák" component={Aktlista} />
@@ -68,7 +68,7 @@ export default function App() {
           component={Root}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Seged" component={Seged} />
+        <Stack.Screen name="Seged" component={Seged} options={{headerStyle:{backgroundColor:'#01c29a'}, headerTintColor: "rgb(18,18,18)", headerTitle: ""}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

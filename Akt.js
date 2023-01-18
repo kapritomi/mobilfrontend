@@ -49,12 +49,12 @@ export default class App extends Component {
 
     render() {
         return (
-            <View >
+            <View style={{flex:1, backgroundColor: "rgb(18,18, 18)"}}>
                 <FlatList
                     data={this.state.data}
                     renderItem={({ item }) => (
-                        <TouchableOpacity style={{ backgroundColor: "#0ca830", width: 350, height: 60, borderRadius: 10, alignSelf: "center", justifyContent: 'center', marginTop: 10 }}
-                            onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20 }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
+                        <TouchableOpacity style={{ backgroundColor: "rgb(32,32, 32)", width: 350, height: 60, borderRadius: 10, alignSelf: "center", justifyContent: 'center', marginTop: 10 }}
+                            onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20 , color: "white"}}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
                     )}
                 />
             </View>

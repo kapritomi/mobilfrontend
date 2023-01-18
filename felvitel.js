@@ -86,28 +86,29 @@ class MyComponent extends React.Component {
 
     render() {
         return (
-            <ScrollView>
-                <View >
-                    {this.state.adatok.map((item, key) => <List.Section key={key}>
-                        <List.Accordion
-                            title={<View><Text>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
-                            style={{ backgroundColor: "#0ca830", width: 350, borderRadius: 10, alignSelf: "center" }}
+            <View style={{flex: 1,backgroundColor:"rgb(18,18,18)" }}>
+                <FlatList 
+                    data={this.state.adatok}
+                    keyExtractor={(item, index) => String(index)}
+                    renderItem={({ item }) => ( <List.Section  >
+                        <List.Accordion 
+                            title={<View><Text style={{color: "white"}}>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
+                            style={{ backgroundColor: "rgb(32,32,32)", width: 350, borderRadius: 10, alignSelf: "center" }}
                             expanded={item.kinyitott}
                             onPress={() => { this._handlePress(item.listak_id); this.getlistakid(item.listak_id) }}>
-
-                            <FlatList
+                            <FlatList 
                                 data={this.state.tartalom}
                                 renderItem={({ item }) => (
-                                    <List.Item title={item.nev}></List.Item>
-                                )} />
+                                    <List.Item title={item.nev} titleStyle={{color: "white"}}></List.Item>
+                                )}/>
                             <View>
-                                <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 }}>{item.listak_ar} Ft</Text>
+                                <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 , color: "white"}}>{item.listak_ar} Ft</Text>
                             </View>
                         </List.Accordion>
                     </List.Section>
-                    )}
-                </View>
-            </ScrollView>
+                )}/>
+            </View>
+          
         );
     }
 }

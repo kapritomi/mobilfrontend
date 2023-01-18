@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, FlatList, Text, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TextInput } from 'react-native';
-import { Button } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 const IP = require('./Ipcim');
 
@@ -326,20 +325,21 @@ export default class App extends Component {
 
     render() {
         return (
-            <View style={{ marginLeft: 8, marginTop: 8 }}>
+            <View style={{flex: 1, backgroundColor: "rgb(18,18,18)"}}>
+            <View>
                 <FlatList
                     data={this.state.tartalom_tomb}
                     renderItem={({ item }) => (
-                        <View >
+                        <View>
                             <View style={{ flexDirection: 'row', flex: 1 }}>
-                                {item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" || item.nev == "Egyéb"? <Text style={{ fontSize: 20 }}> {item.nev}</Text> :
+                                {item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" || item.nev == "Egyéb"? <Text style={{ fontSize: 20 , color: "grey"}}> {item.nev}</Text> :
                                     <Pressable onPress={() => { this.handleChange(item.id); }}>
                                         <MaterialCommunityIcons
-                                            name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={30} color="#000" />
+                                            name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={30} color="grey" />
                                     </Pressable>
 
                                 }{item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" || item.nev == "Egyéb"?
-                                    <Text style={{marginBottom: 15}}></Text> : <Text style={{ fontSize: 20 }}> {item.nev}</Text>
+                                    <Text style={{marginBottom: 15}}></Text> : <Text style={{ fontSize: 20 , color: "grey"}}> {item.nev}</Text>
                                 }
 
                             </View>
@@ -347,16 +347,18 @@ export default class App extends Component {
                     )}
                 />
                 <View style={{ marginTop: 40 }}>
-                    <Text style={{ fontSize: 20 }}>Fizetett összeg:</Text>
+                    <Text style={{ fontSize: 20, color: "grey" }}>Fizetett összeg:</Text>
                     <TextInput
-                        style={{ height: 40, backgroundColor: "#0ca830", width: 150, borderRadius: 10, borderColor: "black", borderWidth: 2 }}
+                        style={{ height: 40, backgroundColor: "rgb(1,194, 154)", width: 150, borderRadius: 10, borderColor: "black", borderWidth: 2 }}
                         onChangeText={szoveg => this.setState({ ar: szoveg })}
+                        keyboardType = 'numeric'
                         value={this.state.ar}
                     />
                     <TouchableOpacity onPress={this.felvitel()}>
-                        <View ><Text style={{ fontSize: 20 }}>Mentés</Text></View>
+                        <View ><Text style={{ fontSize: 20 , color: "grey"}}>Mentés</Text></View>
                     </TouchableOpacity>
                 </View>
+            </View>
             </View>
         );
     }
