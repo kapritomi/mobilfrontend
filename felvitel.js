@@ -18,8 +18,12 @@ class MyComponent extends React.Component {
             this.state.adatok[i].listak_tartalom = tartalomSplitelve
             this.state.adatok[i].kinyitott = false
         }
+        this.navFocusListener = this.props.navigation.addListener('focus', () => { this.getLista(); })
     }
 
+    componentWillUnmount() {
+        this.navFocusListener();
+    }
     _handlePress = (id) => {
         let tombmentese = this.state.adatok
         for (let i = 0; i < this.state.adatok.length; i++) {
@@ -86,29 +90,29 @@ class MyComponent extends React.Component {
 
     render() {
         return (
-            <View style={{flex: 1,backgroundColor:"rgb(18,18,18)" }}>
-                <FlatList 
+            <View style={{ flex: 1, backgroundColor: "rgb(18,18,18)" }}>
+                <FlatList
                     data={this.state.adatok}
                     keyExtractor={(item, index) => String(index)}
-                    renderItem={({ item }) => ( <List.Section  >
-                        <List.Accordion 
-                            title={<View><Text style={{color: "white"}}>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
-                            style={{ backgroundColor: "rgb(32,32,32)", width: 350, borderRadius: 10, alignSelf: "center" }}
+                    renderItem={({ item }) => (<List.Section  >
+                        <List.Accordion
+                            title={<View><Text style={{ color: "white" }}>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
+                            style={{ backgroundColor: "rgb(32,32,32)", }}
                             expanded={item.kinyitott}
                             onPress={() => { this._handlePress(item.listak_id); this.getlistakid(item.listak_id) }}>
-                            <FlatList 
+                            <FlatList
                                 data={this.state.tartalom}
                                 renderItem={({ item }) => (
-                                    <List.Item title={item.nev} titleStyle={{color: "white"}}></List.Item>
-                                )}/>
+                                    <List.Item title={item.nev} titleStyle={{ color: "white" }}></List.Item>
+                                )} />
                             <View>
-                                <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10 , color: "white"}}>{item.listak_ar} Ft</Text>
+                                <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10, color: "white" }}>{item.listak_ar} Ft</Text>
                             </View>
                         </List.Accordion>
                     </List.Section>
-                )}/>
+                    )} />
             </View>
-          
+
         );
     }
 }
