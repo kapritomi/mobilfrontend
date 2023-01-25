@@ -88,6 +88,11 @@ class MyComponent extends React.Component {
 
     }
 
+    szerkesztes = (id) =>{
+        alert(id)
+        
+    }
+
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: "rgb(18,18,18)" }}>
@@ -99,7 +104,9 @@ class MyComponent extends React.Component {
                             title={<View><Text style={{ color: "white" }}>{item.listak_nev}{'\n'}{this.getParsedDate(item.listak_datum)}</Text ></View>}
                             style={{ backgroundColor: "rgb(32,32,32)", }}
                             expanded={item.kinyitott}
-                            onPress={() => { this._handlePress(item.listak_id); this.getlistakid(item.listak_id) }}>
+                            onPress={() => { this._handlePress(item.listak_id); this.getlistakid(item.listak_id) }}
+                            onLongPress={()=>this.props.navigation.navigate('Szerkeszt', { aktid: item.listak_id}) }>
+                            
                             <FlatList
                                 data={this.state.tartalom}
                                 renderItem={({ item }) => (

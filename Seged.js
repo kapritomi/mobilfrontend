@@ -233,9 +233,10 @@ export default class App extends Component {
 
     felvitel = () => {
         var adatok = {
-            bevitel3: this.state.zsolt,
-            bevitel4: this.state.ar
+            bevitel3: this.state.ar,
+            bevitel4: this.props.route.params.aktid
         }
+       
         const response = fetch(IP.ipcim + 'arfel', {
             method: "POST",
             body: JSON.stringify(adatok),
@@ -245,7 +246,7 @@ export default class App extends Component {
 
     funckio = () => {
         let uj = [];
-        this.state.zsolt = this.props.route.params.aktid;
+        this.state.zsolt = this.props.route.params.akttart;
         uj = this.state.zsolt.split(',')
         this.setState({ data: uj })
         this.state.data = uj;
@@ -332,7 +333,7 @@ export default class App extends Component {
                     renderItem={({ item }) => (
                         <View>
                             <View style={{ flexDirection: 'row', flex: 1 }}>
-                                {item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" || item.nev == "Egyéb"? <Text style={{ fontSize: 20 , color: "grey"}}> {item.nev}</Text> :
+                                {item.nev == "péksütemény" || item.nev == "zöldségek" || item.nev == "tejtermék" || item.nev == "Egyéb"? <Text style={{ fontSize: 20 , color: "grey", marginLeft: 10}}> -{item.nev}</Text> :
                                     <Pressable onPress={() => { this.handleChange(item.id); }}>
                                         <MaterialCommunityIcons
                                             name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={30} color="grey" />
@@ -347,15 +348,15 @@ export default class App extends Component {
                     )}
                 />
                 <View style={{ marginTop: 40 }}>
-                    <Text style={{ fontSize: 20, color: "grey" }}>Fizetett összeg:</Text>
+                    <Text style={{ fontSize: 20, color: "grey" , marginLeft: 5}}>Fizetett összeg:</Text>
                     <TextInput
-                        style={{ height: 40, backgroundColor: "rgb(1,194, 154)", width: 150, borderRadius: 10, borderColor: "black", borderWidth: 2 }}
+                        style={{ height: 40, backgroundColor: "rgb(1,194, 154)",marginLeft: 5, width: 150, borderRadius: 10, borderColor: "black", borderWidth: 2 }}
                         onChangeText={szoveg => this.setState({ ar: szoveg })}
                         keyboardType = 'numeric'
                         value={this.state.ar}
                     />
                     <TouchableOpacity onPress={this.felvitel()}>
-                        <View ><Text style={{ fontSize: 20 , color: "grey"}}>Mentés</Text></View>
+                        <View ><Text style={{ fontSize: 20 , color: "grey", marginLeft: 5}}>Mentés</Text></View>
                     </TouchableOpacity>
                 </View>
             </View>

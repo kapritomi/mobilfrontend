@@ -54,7 +54,7 @@ export default class App extends Component {
                     data={this.state.data}
                     renderItem={({ item }) => (
                         <TouchableOpacity style={{ backgroundColor: "rgb(32,32, 32)", height: 60, justifyContent: 'center', marginTop: 10 }}
-                            onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20, color: "white" }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
+                            onPress={() => this.props.navigation.navigate('Seged', { aktid:item.listak_id , akttart:item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20, color: "white" }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
                     )}
                 />
             </View>

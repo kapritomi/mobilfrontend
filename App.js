@@ -7,6 +7,7 @@ import Listaad from './Lista_ad';
 import Felvitel from './felvitel';
 import Aktualis_lista from './Akt';
 import Seged from './Seged';
+import Szerkeszt from './Szerkeszt'
 import Dia from './Dia'
 
 
@@ -69,6 +70,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Seged" component={Seged} options={{ headerStyle: { backgroundColor: '#01c29a' }, headerTintColor: "rgb(18,18,18)", headerTitle: "" }} />
+        <Stack.Screen name="Szerkeszt" component={Szerkeszt} options={{headerStyle: { backgroundColor: '#01c29a' }, headerTintColor: "rgb(18,18,18)", headerTitle: "Lista módosítása"}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
