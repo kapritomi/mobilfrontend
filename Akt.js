@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 const IP = require('./Ipcim');
 
 export default class App extends Component {
@@ -9,9 +9,11 @@ export default class App extends Component {
         this.state = {
             data: [],
             isLoading: true,
-            adat: []
+            adat: [],
         };
     }
+
+
 
     componentDidMount() {
         this.getLista();
@@ -53,8 +55,10 @@ export default class App extends Component {
                 <FlatList
                     data={this.state.data}
                     renderItem={({ item }) => (
+
                         <TouchableOpacity style={{ backgroundColor: "rgb(32,32, 32)", height: 60, justifyContent: 'center', marginTop: 10 }}
-                            onPress={() => this.props.navigation.navigate('Seged', { aktid:item.listak_id , akttart:item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20, color: "white" }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
+                            onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_id, akttart: item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20, color: "white" }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
+
                     )}
                 />
             </View>
