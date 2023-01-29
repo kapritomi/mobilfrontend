@@ -67,11 +67,6 @@ class MyComponent extends React.Component {
     }
   }
 
-
-
-  // ár és alá sortöréssel hónap neve megjelenítve az oszlopok alatt
-
-  //ha valaki feltölti az árat 0ként akkor az érték nem null lesz és nem jelenik meg az ár
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: "rgb(18,18,18)" }}>

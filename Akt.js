@@ -13,10 +13,13 @@ export default class App extends Component {
         };
     }
 
-
-
     componentDidMount() {
         this.getLista();
+        this.navFocusListener = this.props.navigation.addListener('focus', () => { this.getLista(); })
+        
+    }
+    componentWillUnmount() {
+        this.navFocusListener();
     }
 
     async getLista() {
@@ -24,6 +27,7 @@ export default class App extends Component {
             const response = await fetch(IP.ipcim + 'aktualis');
             const json = await response.json();
             this.setState({ data: json });
+            console.log(JSON.stringify(this.state.data))
         } catch (error) {
             console.log(error);
         } finally {
@@ -55,9 +59,9 @@ export default class App extends Component {
                 <FlatList
                     data={this.state.data}
                     renderItem={({ item }) => (
-
                         <TouchableOpacity style={{ backgroundColor: "rgb(32,32, 32)", height: 60, justifyContent: 'center', marginTop: 10 }}
-                            onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_id, akttart: item.listak_tartalom })} ><Text style={{ marginLeft: 3, fontSize: 20, color: "white" }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
+                            onPress={() => this.props.navigation.navigate('Seged', { aktid: item.listak_id, akttart: item.listak_tartalom })} >
+                            <Text style={{ marginLeft: 3, fontSize: 20, color: "white" }}>{item.listak_nev}{"\n"} {this.getParsedDate(item.listak_datum)}</Text></TouchableOpacity>
 
                     )}
                 />

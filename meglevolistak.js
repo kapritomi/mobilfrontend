@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, StyleSheet, View, Pressable } from 'react-native';
+import { FlatList, StyleSheet, View, } from 'react-native';
 const IP = require('./Ipcim');
 import { List } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default class App extends Component {
     constructor(props) {

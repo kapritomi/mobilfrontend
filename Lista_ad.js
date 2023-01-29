@@ -1,123 +1,137 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, {useEffect} from 'react';
+import { useState } from 'react';
+import { Text, View, StyleSheet, FlatList, Button } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Constants from 'expo-constants';
 const IP = require('./Ipcim');
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+const DATA = [
+  {
+    id: '1',
+    title: 'First Item',
+  },
+  {
+    id: '2',
+    title: 'Second Item',
+  },
+  {
+    id: '3',
+    title: 'Third Item',
+  },
+  {
+    id: '4',
+    title: 'Fourth Item',
+  },
+  {
+    id: '5',
+    title: 'Fifth Item',
+  },
+];
 
-    this.state = {
-      data: [],
-      isLoading: true,
-      adat: [],
-      todoList: [
-        { id: '1', text: 'Learn JavaScript' },
-        { id: '2', text: 'Learn React' },
-        { id: '3', text: 'Learn TypeScript' },
-      ]
-    };
-  }
 
-  rightSwipeActions = () => {
-    return (
-      <View
-        style={{
-          backgroundColor: '#ff8303',
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-        }}
-      >
-        <Text
-          style={{
-            color: '#1b1a17',
-            paddingHorizontal: 10,
-            fontWeight: '600',
-            paddingHorizontal: 30,
-            paddingVertical: 20,
-          }}
-        >
-          Delete
-        </Text>
-      </View>
-    );
-  };
 
-  ListItem = ({ text }) => (
-    <Swipeable
-      renderRightActions={rightSwipeActions}
-    >
-      <View
-        style={{
-          paddingHorizontal: 30,
-          paddingVertical: 20,
-          backgroundColor: 'white',
-        }}
-      >
-        <Text style={{ fontSize: 24 }} style={{ fontSize: 20 }}>
-          {text}
-        </Text>
-      </View>
-    </Swipeable>
-  );
 
-  componentDidMount() {
-    this.getLista();
-  }
 
-  async getLista() {
+const App = () => {
+  const [listData, setListData] = useState(DATA);
+
+  const getMovies = async () => {
     try {
       const response = await fetch(IP.ipcim + 'aktualis');
       const json = await response.json();
-      this.setState({ data: json });
+      setData(json.DATA);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
-      this.setState({ isLoading: false });
+      setLoading(false);
     }
-  }
+  };
+  let row=  [];
+  let prevOpenedRow;
 
-  getParsedDate(strDate) {
-    var strSplitDate = String(strDate).split(' ');
-    var date = new Date(strSplitDate[0]);
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1;
+  const renderItem = ({ item, index }, onClick) => {
+    //
+    const closeRow = (index) => {
+      console.log('closerow');
+      if (prevOpenedRow && prevOpenedRow !== row[index]) {
+        prevOpenedRow.close();
+      }
+      prevOpenedRow = row[index];
+    };
 
-    var yyyy = date.getFullYear();
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-    if (mm < 10) {
-      mm = '0' + mm;
-    }
-    date = yyyy + "-" + mm + "-" + dd;
-    return date.toString();
-  }
+    const renderRightActions = (progress, dragX, onClick) => {
+      return (
+        <View
+          style={{
+            margin: 0,
+            alignContent: 'center',
+            justifyContent: 'center',
+            width: 70,
+          }}>
+          <Button color="red" onPress={onClick} title="DELETE"></Button>
+        </View>
+      );
+    };
 
-
-  render() {
     return (
-      <View style={{ flex: 1, backgroundColor: "white" }}>
-        <SafeAreaView style={styles.container}>
-          <Text style={{ textAlign: 'center', marginVertical: 20 }}>
-            Swipe right or left
-          </Text>
-          <FlatList
-            data={this.state.todoList}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => this.ListItem(item)}
-            ItemSeparatorComponent={() => <Separator />}
-          />
-        </SafeAreaView>
-      </View>
+      <Swipeable
+        renderRightActions={(progress, dragX) =>
+          renderRightActions(progress, dragX, onClick)
+        }
+        onSwipeableOpen={() => closeRow(index)}
+        ref={(ref) => (row[index] = ref)}
+        rightOpenValue={-100}>
+        <View
+          style={{
+            margin: 4,
+            borderColor: 'grey',
+            borderWidth: 1,
+            padding: 9,
+            backgroundColor: 'white',
+          }}>
+          <Text>{item.title}</Text>
+        </View>
+      </Swipeable>
     );
-  }
-}
+  };
 
+  const deleteItem = ({ item, index }) => {
+    console.log(item, index);
+    let a = listData;
+    a.splice(index, 1);
+    console.log(a);
+    setListData([...a]);
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={listData}
+        renderItem={(v) =>
+          renderItem(v, () => {
+            console.log('Pressed', v);
+            deleteItem(v);
+          })
+        }
+        keyExtractor={(item) => item.id}></FlatList>
+    </View>
+  );
+};
+
+
+export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-  }
-
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  },
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
