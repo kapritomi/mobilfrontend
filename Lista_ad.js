@@ -1,53 +1,50 @@
-import React, {useEffect} from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, FlatList, Button } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Constants from 'expo-constants';
+import { TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 const IP = require('./Ipcim');
-
-const DATA = [
-  {
-    id: '1',
-    title: 'First Item',
-  },
-  {
-    id: '2',
-    title: 'Second Item',
-  },
-  {
-    id: '3',
-    title: 'Third Item',
-  },
-  {
-    id: '4',
-    title: 'Fourth Item',
-  },
-  {
-    id: '5',
-    title: 'Fifth Item',
-  },
-];
-
-
-
 
 
 const App = () => {
-  const [listData, setListData] = useState(DATA);
+  const [listData, setListData] = useState(data);
+  const [data, setData] = useState([]);
 
-  const getMovies = async () => {
-    try {
-      const response = await fetch(IP.ipcim + 'aktualis');
-      const json = await response.json();
-      setData(json.DATA);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+  const getMovies = () => {
+    fetch(IP.ipcim + 'listak')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setData(responseJson)
+      })
   };
-  let row=  [];
+
+  useEffect(() => {
+    getMovies();
+    console.log(data)
+  }, []);
+
+
+  let row = [];
   let prevOpenedRow;
+
+  const getParsedDate = (strDate) => {
+    var strSplitDate = String(strDate).split(' ');
+    var date = new Date(strSplitDate[0]);
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1;
+
+    var yyyy = date.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    date = yyyy + "-" + mm + "-" + dd;
+    return date.toString();
+  }
+
 
   const renderItem = ({ item, index }, onClick) => {
     //
@@ -66,9 +63,15 @@ const App = () => {
             margin: 0,
             alignContent: 'center',
             justifyContent: 'center',
+            backgroundColor: "red",
+            borderRadius: 10,
+            marginTop: 5,
+            height: 52,
             width: 70,
           }}>
-          <Button color="red" onPress={onClick} title="DELETE"></Button>
+          <TouchableOpacity onPress={onClick} ><Text style={{ color: "white", fontSize: 18, textAlign: "center" }}><Ionicons name="trash-outline" size={22} color="white" /></Text>
+
+          </TouchableOpacity>
         </View>
       );
     };
@@ -84,49 +87,62 @@ const App = () => {
         <View
           style={{
             margin: 4,
-            borderColor: 'grey',
+            backgroundColor: "rgb(32,32,32)",
             borderWidth: 1,
             padding: 9,
-            backgroundColor: 'white',
+
           }}>
-          <Text>{item.title}</Text>
+          <Text style={{ color: "white", fontSize: 20 }}>{item.listak_nev}{"\n"}{getParsedDate(item.listak_datum)}</Text>
         </View>
       </Swipeable>
     );
   };
 
-  const deleteItem = ({ item, index }) => {
-    console.log(item, index);
-    let a = listData;
-    a.splice(index, 1);
-    console.log(a);
-    setListData([...a]);
+  const deleteItem = (id) => {
+    var adatok = {
+      bevitel5: id
+    }
+    try {
+      fetch(IP.ipcim + 'listatorles', {
+        method: 'DELETE',
+        body: JSON.stringify(adatok),
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+      })
+    }
+    catch (e) {
+      console.log(e)
+    }
+    finally {
+
+      console.log("siker")
+    }
   };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={listData}
+        data={data}
         renderItem={(v) =>
           renderItem(v, () => {
-            console.log('Pressed', v);
-            deleteItem(v);
+            console.log('Pressed', v.item.listak_id);
+            deleteItem(v.item.listak_id);
           })
         }
-        keyExtractor={(item) => item.id}></FlatList>
+        keyExtractor={(item) => item.listak_id}></FlatList>
     </View>
   );
 };
 
 
 export default App;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-    padding: 8,
+    backgroundColor: 'black',
+
+
   },
   paragraph: {
     margin: 24,
