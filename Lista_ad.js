@@ -4,12 +4,14 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 const IP = require('./Ipcim');
 
 
 const App = () => {
   const [listData, setListData] = useState(data);
   const [data, setData] = useState([]);
+  const navigation = useNavigation();
 
   const getMovies = () => {
     fetch(IP.ipcim + 'listak')
@@ -21,7 +23,7 @@ const App = () => {
 
   useEffect(() => {
     getMovies();
-    console.log(data)
+    //console.log(data)
   }, []);
 
 
@@ -49,7 +51,7 @@ const App = () => {
   const renderItem = ({ item, index }, onClick) => {
     //
     const closeRow = (index) => {
-      console.log('closerow');
+      //console.log('closerow');
       if (prevOpenedRow && prevOpenedRow !== row[index]) {
         prevOpenedRow.close();
       }
@@ -66,7 +68,7 @@ const App = () => {
             backgroundColor: "red",
             borderRadius: 10,
             marginTop: 5,
-            height: 52,
+            height: 69,
             width: 70,
           }}>
           <TouchableOpacity onPress={onClick} ><Text style={{ color: "white", fontSize: 18, textAlign: "center" }}><Ionicons name="trash-outline" size={22} color="white" /></Text>
@@ -77,6 +79,7 @@ const App = () => {
     };
 
     return (
+      <TouchableOpacity onPress={() => navigation.navigate('Seged', {aktid: item.listak_id, akttart: item.listak_tartalom})}>
       <Swipeable
         renderRightActions={(progress, dragX) =>
           renderRightActions(progress, dragX, onClick)
@@ -90,13 +93,20 @@ const App = () => {
             backgroundColor: "rgb(32,32,32)",
             borderWidth: 1,
             padding: 9,
+            height:70
 
           }}>
           <Text style={{ color: "white", fontSize: 20 }}>{item.listak_nev}{"\n"}{getParsedDate(item.listak_datum)}</Text>
         </View>
       </Swipeable>
+      </TouchableOpacity>
     );
   };
+
+  const removeItem = (id) =>{
+    setData((current)=>
+    current.filter((data)=> data.listak_id != id))
+  }
 
   const deleteItem = (id) => {
     var adatok = {
@@ -110,11 +120,11 @@ const App = () => {
       })
     }
     catch (e) {
-      console.log(e)
+      //console.log(e)
     }
     finally {
-
-      console.log("siker")
+     removeItem(id)
+     
     }
   };
 
@@ -124,7 +134,6 @@ const App = () => {
         data={data}
         renderItem={(v) =>
           renderItem(v, () => {
-            console.log('Pressed', v.item.listak_id);
             deleteItem(v.item.listak_id);
           })
         }

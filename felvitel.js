@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { List, Checkbox } from 'react-native-paper';
 import { View, Text, FlatList } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import SelectDropdown from 'react-native-select-dropdown'
+import { Entypo } from '@expo/vector-icons';
 const IP = require('./Ipcim');
 
 class MyComponent extends React.Component {
     state = {
         adatok: [],
         tartalom: [],
+        countries : ["Ár szerint csökkenő", "Ár szerint növekvő", "Legújabb", "Legrégebbi"],
+        listaszama: 0
     }
 
     componentDidMount() {
@@ -24,6 +27,7 @@ class MyComponent extends React.Component {
     componentWillUnmount() {
         this.navFocusListener();
     }
+
     _handlePress = (id) => {
         let tombmentese = this.state.adatok
         for (let i = 0; i < this.state.adatok.length; i++) {
@@ -46,6 +50,18 @@ class MyComponent extends React.Component {
     async getLista() {
         try {
             const response = await fetch(IP.ipcim + 'listak');
+            const json = await response.json();
+            this.setState({ adatok: json });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            this.setState({ isLoading: false });
+        }
+
+    }
+    async rendezett(rend) {
+        try {
+            const response = await fetch(IP.ipcim + rend);
             const json = await response.json();
             this.setState({ adatok: json });
         } catch (error) {
@@ -93,9 +109,40 @@ class MyComponent extends React.Component {
         
     }
 
+
+    rendezes = () =>{
+        if(this.state.listaszama == 0){
+            this.rendezett("listakrendezve")
+        }
+        if (this.state.listaszama == 1) {
+            this.rendezett("listakrendezve1")
+        }
+            
+        }
+    
+    
+
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: "rgb(18,18,18)" }}>
+                  <SelectDropdown  
+                    defaultButtonText={<View style={{flexDirection: 'row'}}><Entypo name="select-arrows" size={20} color={"white"} /><Text style={{color: "white", fontSize: 15}}>Rendezés</Text></View>} 
+                    rowStyle={{backgroundColor: "rgb(50,50,50)", borderRadius: 10}} 
+                    dropdownStyle={{backgroundColor: 'transparent', width: 200} }
+                    buttonStyle={{ borderRadius: 20, alignContent: "center", alignItems: "center", backgroundColor: "rgb(50,50,50)"}}
+                    data={this.state.countries}
+                    onSelect={(selectedItem, index) => {
+                        this.setState({listaszama: index})
+                        console.log(selectedItem, index)
+                        this.rendezes()
+                    }}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                        return <View style={{flexDirection: 'row'}}><Entypo name="select-arrows" size={22} color={"white"} /><Text style={{color: "white"}}>Rendezés</Text></View>
+                    }}
+                    rowTextForSelection={(item, index) => {
+                        return item
+                    }}
+                />
                 <FlatList
                     data={this.state.adatok}
                     keyExtractor={(item, index) => String(index)}

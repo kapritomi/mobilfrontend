@@ -5,7 +5,10 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { TouchableOpacity } from "react-native";
 
 
+
+
 const CustomDrawer = (props, { navigation }) => {
+    
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView
