@@ -110,15 +110,20 @@ class MyComponent extends React.Component {
     }
 
 
-    rendezes = () =>{
-        if(this.state.listaszama == 0){
-            this.rendezett("listakrendezve")
+    rendezes = (index) =>{
+        if(index == 0){
+            this.rendezett("listakarszerintcsokk")
         }
-        if (this.state.listaszama == 1) {
-            this.rendezett("listakrendezve1")
+        if (index == 1) {
+            this.rendezett("listakarszerintnov")
         }
-            
+        if (index == 2) {
+            this.rendezett("listakdatumszerintcsokk")
         }
+        if (index == 3) {
+            this.rendezett("listakdatumszerintnov")
+        }
+    }
     
     
 
@@ -128,13 +133,15 @@ class MyComponent extends React.Component {
                   <SelectDropdown  
                     defaultButtonText={<View style={{flexDirection: 'row'}}><Entypo name="select-arrows" size={20} color={"white"} /><Text style={{color: "white", fontSize: 15}}>Rendezés</Text></View>} 
                     rowStyle={{backgroundColor: "rgb(50,50,50)", borderRadius: 10}} 
+                    rowTextStyle={{ color: "white"}}
                     dropdownStyle={{backgroundColor: 'transparent', width: 200} }
                     buttonStyle={{ borderRadius: 20, alignContent: "center", alignItems: "center", backgroundColor: "rgb(50,50,50)"}}
+                    
                     data={this.state.countries}
                     onSelect={(selectedItem, index) => {
                         this.setState({listaszama: index})
                         console.log(selectedItem, index)
-                        this.rendezes()
+                        this.rendezes(index)
                     }}
                     buttonTextAfterSelection={(selectedItem, index) => {
                         return <View style={{flexDirection: 'row'}}><Entypo name="select-arrows" size={22} color={"white"} /><Text style={{color: "white"}}>Rendezés</Text></View>
