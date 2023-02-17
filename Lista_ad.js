@@ -13,16 +13,18 @@ const App = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
 
-  const getMovies = () => {
-    fetch(IP.ipcim + 'listak')
+  const getListak = () => {
+    fetch(IP.ipcim + 'aktualis')
       .then((response) => response.json())
       .then((responseJson) => {
         setData(responseJson)
       })
   };
 
+
+
   useEffect(() => {
-    getMovies();
+    getListak();
     //console.log(data)
   }, []);
 
@@ -79,33 +81,33 @@ const App = () => {
     };
 
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('Seged', {aktid: item.listak_id, akttart: item.listak_tartalom})}>
-      <Swipeable
-        renderRightActions={(progress, dragX) =>
-          renderRightActions(progress, dragX, onClick)
-        }
-        onSwipeableOpen={() => closeRow(index)}
-        ref={(ref) => (row[index] = ref)}
-        rightOpenValue={-100}>
-        <View
-          style={{
-            margin: 4,
-            backgroundColor: "rgb(32,32,32)",
-            borderWidth: 1,
-            padding: 9,
-            height:70
+      <TouchableOpacity onPress={() => navigation.navigate('Seged', { aktid: item.listak_id, akttart: item.listak_tartalom })}>
+        <Swipeable
+          renderRightActions={(progress, dragX) =>
+            renderRightActions(progress, dragX, onClick)
+          }
+          onSwipeableOpen={() => closeRow(index)}
+          ref={(ref) => (row[index] = ref)}
+          rightOpenValue={-100}>
+          <View
+            style={{
+              margin: 4,
+              backgroundColor: "rgb(32,32,32)",
+              borderWidth: 1,
+              padding: 9,
+              height: 70
 
-          }}>
-          <Text style={{ color: "white", fontSize: 20 }}>{item.listak_nev}{"\n"}{getParsedDate(item.listak_datum)}</Text>
-        </View>
-      </Swipeable>
+            }}>
+            <Text style={{ color: "white", fontSize: 20 }}>{item.listak_nev}{"\n"}{getParsedDate(item.listak_datum)}</Text>
+          </View>
+        </Swipeable>
       </TouchableOpacity>
     );
   };
 
-  const removeItem = (id) =>{
-    setData((current)=>
-    current.filter((data)=> data.listak_id != id))
+  const removeItem = (id) => {
+    setData((current) =>
+      current.filter((data) => data.listak_id != id))
   }
 
   const deleteItem = (id) => {
@@ -123,8 +125,8 @@ const App = () => {
       //console.log(e)
     }
     finally {
-     removeItem(id)
-     
+      removeItem(id)
+
     }
   };
 

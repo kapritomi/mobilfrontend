@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, Text, FlatList, TextInput, Alert } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, TextInput, Alert, TouchableOpacity, StyleSheet } from 'react-native';
 const IP = require('./Ipcim');
 
 class MyComponent extends React.Component {
@@ -69,9 +68,12 @@ class MyComponent extends React.Component {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 1, marginTop: 20, borderRadius: 10 }}>
+        <View style={{ flex: 1, marginTop: 20 }}>
           <Text style={{ fontSize: 20, color: "grey", marginLeft: 5 }}>Lista törlése</Text>
-          <TouchableOpacity style={{ marginTop: 10, marginLeft: 1, width: 150, borderRadius: 10, borderColor: "black", borderWidth: 2 }} onPress={() => this.createTwoButtonAlert()}><Text style={{ backgroundColor: "rgb(1,194, 154)", fontSize: 22 }}>Törlés</Text></TouchableOpacity>
+
+          <TouchableOpacity style={styles.gomb} onPress={() => this.createTwoButtonAlert()}>
+            <Text style={{ backgroundColor: "rgb(1,194, 154)", fontSize: 22 }}>Törlés</Text>
+          </TouchableOpacity>
         </View>
 
 
@@ -79,5 +81,14 @@ class MyComponent extends React.Component {
     );
   }
 }
+const styles = StyleSheet.create({
+  gomb: {
+    marginTop: 10,
+    marginLeft: 1,
+    width: 150,
+    borderRadius: 20,
+
+  }
+});
 
 export default MyComponent;

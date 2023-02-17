@@ -9,7 +9,7 @@ class MyComponent extends React.Component {
     state = {
         adatok: [],
         tartalom: [],
-        countries : ["Ár szerint csökkenő", "Ár szerint növekvő", "Legújabb", "Legrégebbi"],
+        szavak: ["Ár szerint csökkenő", "Ár szerint növekvő", "Legújabb", "Legrégebbi"],
         listaszama: 0
     }
 
@@ -104,14 +104,13 @@ class MyComponent extends React.Component {
 
     }
 
-    szerkesztes = (id) =>{
+    szerkesztes = (id) => {
         alert(id)
-        
+
     }
 
-
-    rendezes = (index) =>{
-        if(index == 0){
+    rendezes = (index) => {
+        if (index == 0) {
             this.rendezett("listakarszerintcsokk")
         }
         if (index == 1) {
@@ -124,32 +123,32 @@ class MyComponent extends React.Component {
             this.rendezett("listakdatumszerintnov")
         }
     }
-    
-    
 
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: "rgb(18,18,18)" }}>
-                  <SelectDropdown  
-                    defaultButtonText={<View style={{flexDirection: 'row'}}><Entypo name="select-arrows" size={20} color={"white"} /><Text style={{color: "white", fontSize: 15}}>Rendezés</Text></View>} 
-                    rowStyle={{backgroundColor: "rgb(50,50,50)", borderRadius: 10}} 
-                    rowTextStyle={{ color: "white"}}
-                    dropdownStyle={{backgroundColor: 'transparent', width: 200} }
-                    buttonStyle={{ borderRadius: 20, alignContent: "center", alignItems: "center", backgroundColor: "rgb(50,50,50)"}}
-                    
-                    data={this.state.countries}
-                    onSelect={(selectedItem, index) => {
-                        this.setState({listaszama: index})
-                        console.log(selectedItem, index)
-                        this.rendezes(index)
-                    }}
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                        return <View style={{flexDirection: 'row'}}><Entypo name="select-arrows" size={22} color={"white"} /><Text style={{color: "white"}}>Rendezés</Text></View>
-                    }}
-                    rowTextForSelection={(item, index) => {
-                        return item
-                    }}
-                />
+                <View style={{ marginTop: 5 }}>
+                    <SelectDropdown
+                        defaultButtonText={<View style={{ flexDirection: 'row' }}><Entypo name="select-arrows" size={20} color={"white"} /><Text style={{ color: "white", fontSize: 20, marginTop: -1 }}>Rendezés</Text></View>}
+                        rowStyle={{ backgroundColor: "rgb(50,50,50)", borderRadius: 10, borderBottomColor: "black", borderWidth: 2 }}
+                        rowTextStyle={{ color: "white" }}
+                        dropdownStyle={{ backgroundColor: 'transparent', width: 200 }}
+                        buttonStyle={{ borderRadius: 20, alignContent: "center", alignItems: "center", backgroundColor: "rgb(50,50,50)", width: 140, height: 35, borderColor: "white", borderWidth: 2 }}
+
+                        data={this.state.szavak}
+                        onSelect={(selectedItem, index) => {
+                            this.setState({ listaszama: index })
+                            console.log(selectedItem, index)
+                            this.rendezes(index)
+                        }}
+                        buttonTextAfterSelection={(selectedItem, index) => {
+                            return <View style={{ flexDirection: 'row' }}><Entypo name="select-arrows" size={22} color={"white"} /><Text style={{ color: "white" }}>Rendezés</Text></View>
+                        }}
+                        rowTextForSelection={(item, index) => {
+                            return item
+                        }}
+                    />
+                </View>
                 <FlatList
                     data={this.state.adatok}
                     keyExtractor={(item, index) => String(index)}
@@ -159,8 +158,8 @@ class MyComponent extends React.Component {
                             style={{ backgroundColor: "rgb(32,32,32)", }}
                             expanded={item.kinyitott}
                             onPress={() => { this._handlePress(item.listak_id); this.getlistakid(item.listak_id) }}
-                            onLongPress={()=>this.props.navigation.navigate('Szerkeszt', { aktid: item.listak_id}) }>
-                            
+                            onLongPress={() => this.props.navigation.navigate('Szerkeszt', { aktid: item.listak_id })}>
+
                             <FlatList
                                 data={this.state.tartalom}
                                 renderItem={({ item }) => (

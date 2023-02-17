@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { View, Text, ImageBackground, Image, Pressable } from 'react-native'
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { TouchableOpacity } from "react-native";
-
+const IP = require('./Ipcim');
 
 
 
 const CustomDrawer = (props, { navigation }) => {
-    
+
+    /*const [data, setData] = useState("");
+
+    const getListak = () => {
+        fetch(IP.ipcim + 'felhasznaloossz')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setData(responseJson)
+            })
+    };
+
+    useEffect(() => {
+        getListak();
+        //console.log(data)
+    }, []);*/
+
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView
