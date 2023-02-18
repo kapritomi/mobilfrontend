@@ -4,34 +4,37 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Constants from 'expo-constants';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import SelectDropdown from 'react-native-select-dropdown'
 import { Entypo } from '@expo/vector-icons';
 import { List, Checkbox } from 'react-native-paper';
+
 const IP = require('./Ipcim');
 
 
 const App = () => {
-    const [listData, setListData] = useState(data);
-    const [data, setData] = useState([]);
-    const navigation = useNavigation();
+    
     const szavak = ["Ár szerint csökkenő", "Ár szerint növekvő", "Legújabb", "Legrégebbi"];
+    const [listaszam, setListaszam] = useState(0);
+    const [adatok, setAdatok] = useState("");
+    const [tartalom, setTartalom] = useState([]);
+    
 
     const getListak = () => {
-        fetch(IP.ipcim + 'aktualis')
+        fetch(IP.ipcim + 'listak')
             .then((response) => response.json())
             .then((responseJson) => {
-                setData(responseJson)
+                setAdatok(responseJson)
             })
     };
-
-
-
     useEffect(() => {
         getListak();
-        //console.log(data)
+        let tartalomSplitelve = "";
+        for (let i = 0; i < adatok.length; i++) {
+            tartalomSplitelve = adatok[i].listak_tartalom.split(',')
+            adatok[i].listak_tartalom = tartalomSplitelve
+            adatok[i].kinyitott = false
+        }
     }, []);
-
 
     let row = [];
     let prevOpenedRow;
@@ -53,6 +56,45 @@ const App = () => {
         return date.toString();
     }
 
+   const _handlePress = (id) => {
+        let tombmentese = adatok
+        for (let i = 0; i < adatok.length; i++) {
+            if (adatok[i].listak_id == id) {
+                tombmentese[i].kinyitott = !tombmentese[i].kinyitott
+
+            }
+            else {
+                tombmentese[i].kinyitott = false
+            }
+            setAdatok(tombmentese) 
+            //console.log(JSON.stringify(tombmentese))
+
+        }
+        
+    }
+
+    const getlistakid = (id) => {
+        let uj = [];
+        let megujabb = [];
+        adatok.map((item) => {
+            if (item.listak_id == id) {
+                megujabb = item.listak_tartalom.split(',')
+            }
+        });
+        for (let i = 0; i < megujabb.length; i++) {
+            uj.push({ nev: megujabb[i], isChecked: false, id: i })
+           setTartalom(uj)
+        }
+
+    }
+
+    const rendezett = (rend) => {
+        fetch(IP.ipcim + rend)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            setAdatok(responseJson)
+          })
+      };
 
     const renderItem = ({ item, index }, onClick) => {
         //
@@ -85,7 +127,7 @@ const App = () => {
         };
 
         return (
-            <TouchableOpacity onPress={() => navigation.navigate('Seged', { aktid: item.listak_id, akttart: item.listak_tartalom })}>
+           
                 <Swipeable
                     renderRightActions={(progress, dragX) =>
                         renderRightActions(progress, dragX, onClick)
@@ -93,24 +135,30 @@ const App = () => {
                     onSwipeableOpen={() => closeRow(index)}
                     ref={(ref) => (row[index] = ref)}
                     rightOpenValue={-100}>
-                    <View
-                        style={{
-                            margin: 4,
-                            backgroundColor: "rgb(32,32,32)",
-                            borderWidth: 1,
-                            padding: 9,
-                            height: 70
-
-                        }}>
-                        <Text style={{ color: "white", fontSize: 20 }}>{item.listak_nev}{"\n"}{getParsedDate(item.listak_datum)}</Text>
-                    </View>
+                     <List.Section  >
+                        <List.Accordion
+                            title={<View><Text style={{ color: "white" }}>{item.listak_nev}{'\n'}{getParsedDate(item.listak_datum)}</Text ></View>}
+                            style={{ backgroundColor: "rgb(32,32,32)", }}
+                            expanded={item.kinyitott}
+                            onPress={() => { _handlePress(item.listak_id); getlistakid(item.listak_id) }}>
+                                <FlatList
+                                data={tartalom}
+                                renderItem={({ item }) => (
+                                    <List.Item title={item.nev} titleStyle={{ color: "white" }}></List.Item>
+                                )} />
+                            <View>
+                                <Text style={{ fontSize: 20, textAlign: "right", marginRight: 10, color: "white" }}>{item.listak_ar} Ft</Text>
+                            </View>
+                        </List.Accordion>
+                    </List.Section>
                 </Swipeable>
-            </TouchableOpacity>
+                
+            
         );
     };
 
     const removeItem = (id) => {
-        setData((current) =>
+        setAdatok((current) =>
             current.filter((data) => data.listak_id != id))
     }
 
@@ -126,13 +174,28 @@ const App = () => {
             })
         }
         catch (e) {
-            //console.log(e)
+            
         }
         finally {
             removeItem(id)
 
         }
     };
+
+    const rendezes = (index) => {
+        if (index == 0) {
+            rendezett("listakarszerintcsokk")
+        }
+        if (index == 1) {
+            rendezett("listakarszerintnov")
+        }
+        if (index == 2) {
+            rendezett("listakdatumszerintcsokk")
+        }
+        if (index == 3) {
+            rendezett("listakdatumszerintnov")
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -146,9 +209,9 @@ const App = () => {
 
                     data={szavak}
                     onSelect={(selectedItem, index) => {
-                        this.setState({ listaszama: index })
+                        setListaszam( index) 
                         console.log(selectedItem, index)
-                        this.rendezes(index)
+                        rendezes(index)
                     }}
                     buttonTextAfterSelection={(selectedItem, index) => {
                         return <View style={{ flexDirection: 'row' }}><Entypo name="select-arrows" size={22} color={"white"} /><Text style={{ color: "white" }}>Rendezés</Text></View>
@@ -158,8 +221,9 @@ const App = () => {
                     }}
                 />
             </View>
+            
             <FlatList
-                data={data}
+                data={adatok}
                 renderItem={(v) =>
                     renderItem(v, () => {
                         deleteItem(v.item.listak_id);
